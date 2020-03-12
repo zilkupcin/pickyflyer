@@ -1,0 +1,1035 @@
+// Variables
+
+$bgColor: #f5f5f5;
+$mainColor: #00b8f8;
+$mainColorHover: #31c3f5;
+$borderColor: #cecece;
+$mainFont: "Comfortaa", cursive;
+$boxShadow: 0 2px 8px 0 rgba(11, 31, 64, 0.07);
+$boxShadowLower: 0 8px 8px 0 rgba(11, 31, 64, 0.07);
+
+@mixin flexCenter($direction) {
+  display: flex;
+  align-items: center;
+  flex-direction: $direction;
+  flex-wrap: wrap;
+}
+
+@mixin greyBorder() {
+  border-radius: 5px;
+  border: 1px solid #eef3f7;
+}
+
+@mixin transparentBorder() {
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+
+@mixin borderNoTop {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-top-color: #fff;
+}
+
+@mixin borderNoBottom {
+  border-bottom-left-radius: 0%;
+  border-bottom-right-radius: 0%;
+  border-bottom-color: #fff;
+}
+
+@mixin boxWithShadow {
+  box-shadow: rgba(0, 0, 0, 0.05) -5px 5px 30px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+@mixin navLink {
+  display: inline-block;
+  margin-right: 24px;
+  font-weight: 300;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.1s ease-in-out;
+}
+
+@mixin headingLabel {
+  text-transform: uppercase;
+  color: #979797;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-align: center;
+  display: block;
+  margin-bottom: 4px;
+}
+
+// Media queries
+
+@mixin phone {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
+@mixin tablet-portrait {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin custom-breakpoint($minWidth) {
+  @media (max-width: $minWidth) {
+    @content;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
+body {
+  background-color: #fff;
+}
+
+body,
+input,
+button,
+textarea {
+  font-family: $mainFont;
+  color: #333;
+}
+
+input,
+textarea {
+  border: none;
+  background-color: transparent;
+}
+
+a {
+  text-decoration: none;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  @include flexCenter(row);
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding: 12px 24px;
+  background-color: #fff;
+  height: 60px;
+  transition: box-shadow 0.2s ease-in-out, height 0.2s ease-in-out;
+
+  &.fixed {
+    z-index: 100;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+    height: 52px;
+  }
+
+  &.fixed ~ .head {
+    margin-top: 76px;
+  }
+
+  .header__section--left {
+    @include flexCenter(row);
+
+    .site-info {
+      cursor: pointer;
+      @include flexCenter(row);
+      .site-info__logo {
+        width: 50px;
+      }
+      .site-info__name {
+        font-weight: 300;
+        font-size: 24px;
+      }
+
+      @include tablet-landscape() {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .nav {
+    margin-right: 70px;
+    .nav__link {
+      @include navLink();
+      &:hover {
+        font-weight: 500;
+        cursor: pointer;
+      }
+    }
+
+    .nav__link--selected {
+      font-weight: 500;
+    }
+
+    @include tablet-landscape() {
+      display: none;
+    }
+  }
+
+  .currency-selector {
+    @include flexCenter(row);
+    position: relative;
+    padding: 12px;
+    @include transparentBorder();
+    @include borderNoBottom();
+    box-sizing: border-box;
+    font-weight: 300;
+    cursor: pointer;
+    font-size: 15px;
+
+    .dropdown__item {
+      text-align: center;
+    }
+
+    .currency-selector__arrow {
+      width: 20px;
+      fill: #333;
+    }
+
+    @include tablet-landscape() {
+      display: none;
+    }
+  }
+
+  .currency-selector--is-active {
+    @include greyBorder();
+    @include borderNoBottom();
+    box-shadow: $boxShadow;
+  }
+
+  .mobile-hamburger {
+    cursor: pointer;
+    display: none;
+    fill: #333;
+
+    @include tablet-landscape() {
+      display: inline-block;
+    }
+  }
+}
+
+.nav-mobile {
+  padding: 12px 0;
+  .nav-mobile__link {
+    @include navLink();
+    margin-right: 0px;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .nav-mobile__link--selected {
+    font-weight: 500;
+  }
+}
+
+.side-bar {
+  width: 150px;
+  position: fixed;
+  right: -300px;
+  top: 0;
+  bottom: 0;
+  padding: 24px;
+  z-index: 400;
+  background-color: #fff;
+  transition: right 0.2s ease-in-out;
+  text-align: center;
+  box-shadow: $boxShadow;
+
+  &.side-bar--open {
+    right: 0;
+  }
+
+  .side-bar__close {
+    display: block;
+    margin-bottom: 24px;
+    margin-left: auto;
+    cursor: pointer;
+    fill: #333;
+  }
+
+  .side-bar__section-heading {
+    @include headingLabel();
+    padding: 12px 0;
+  }
+
+  .currency-selector--mobile {
+    @include flexCenter(row);
+    justify-content: center;
+    position: relative;
+    padding: 12px 0;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+
+    .dropdown {
+      border-radius: 0;
+    }
+
+    .dropdown__item {
+      text-align: center;
+    }
+  }
+
+  .dropdown {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.wrapper {
+  max-width: 850px;
+  margin: 0 auto;
+
+  @include custom-breakpoint(895px) {
+    max-width: 600px;
+    padding: 0 24px;
+  }
+}
+
+.wrapper--wide {
+  max-width: 1350px;
+  margin: 0 auto;
+}
+
+.btn-main {
+  max-width: 150px;
+  display: inline-block;
+  height: 40px;
+  padding: 0 42px;
+  background-color: $mainColor;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background-color: $mainColorHover;
+  }
+}
+
+.btn-outline {
+  @extend .btn-main;
+  color: $mainColor;
+  border: 1px solid $mainColor;
+  background-color: #fff;
+  &:hover {
+    background-color: $mainColor;
+    color: #fff;
+  }
+}
+
+.dropdown {
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  right: -1px;
+  left: -1px;
+  background: #fff;
+  @include greyBorder();
+  @include borderNoTop();
+  box-shadow: $boxShadowLower;
+  overflow: hidden;
+  z-index: 300;
+
+  .dropdown__item {
+    padding: 12px;
+    font-size: 15px;
+    text-align: left;
+
+    &:first-child {
+      padding-top: 12px;
+    }
+    &:last-child {
+      padding-bottom: 12px;
+    }
+    &:hover {
+      color: #fff;
+      background-color: $mainColor;
+      cursor: pointer;
+    }
+  }
+}
+
+.dropdown--is-active {
+  visibility: visible;
+}
+
+.head {
+  padding: 96px 0px;
+  background-image: url("./images/hero.jpg");
+  background-position: 0 70%;
+  background-size: cover;
+  margin-top: 84px;
+  transition: margin-top 0.2s ease-in-out;
+}
+
+.search {
+  box-sizing: border-box;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 5px;
+  text-align: center;
+
+  .search__heading {
+    font-size: 18px;
+  }
+
+  .search__content {
+    display: flex;
+    margin-top: 24px;
+    align-items: center;
+
+    @include tablet-landscape() {
+      flex-direction: column;
+    }
+  }
+
+  .search__content__group {
+    display: inline-block;
+    flex-grow: 1;
+
+    @include tablet-landscape() {
+      margin-bottom: 24px;
+    }
+
+    @include tablet-portrait() {
+      width: 60%;
+    }
+
+    @include custom-breakpoint(470px) {
+      width: 80%;
+    }
+
+    @include custom-breakpoint(350px) {
+      width: 100%;
+    }
+  }
+}
+
+.input-error {
+  display: block;
+  font-size: 14px;
+  margin-top: 24px;
+  color: #e74c3c;
+}
+
+.input-group {
+  @include flexCenter(row);
+
+  @include tablet-portrait() {
+    flex-direction: column;
+  }
+}
+
+.input-container {
+  display: flex;
+  width: calc(33.3% - 12px);
+  margin-right: 12px;
+  @include greyBorder();
+  box-shadow: $boxShadow;
+  box-sizing: border-box;
+  align-items: center;
+  position: relative;
+
+  &:last-child {
+    margin-right: 0px;
+  }
+
+  .input-container__icon {
+    position: absolute;
+    left: 12px;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 12px 12px 44px;
+    border-radius: 5px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    border-radius: 5px;
+    padding: 12px;
+  }
+
+  @include tablet-portrait() {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+}
+
+.input-container--is-active {
+  position: relative;
+  @include borderNoBottom();
+}
+
+.form {
+  .input-container {
+    width: 100%;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  input {
+    padding-left: 12px;
+  }
+}
+
+.home {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+
+  .home__card {
+    width: 49%;
+    padding: 30px 30px;
+    @include boxWithShadow();
+    border-radius: 8px;
+
+    .card__heading {
+      margin-bottom: 24px;
+      font-weight: 500;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .card__content {
+      line-height: 32px;
+      font-weight: 300;
+    }
+
+    .feature-list li::before {
+      display: inline-block;
+      width: 1em;
+      content: "\2022";
+      margin-left: -1em;
+      font-weight: bold;
+      color: #00b8f8;
+    }
+
+    .feature-list li {
+      margin-bottom: 24px;
+      font-weight: 300;
+      padding-left: 12px;
+
+      @media only screen and (min-width: 400px) {
+        padding-left: 0px;
+      }
+    }
+
+    @media only screen and (min-width: 400px) {
+      padding: 60px 60px;
+    }
+
+    @include custom-breakpoint(895px) {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  }
+
+  @include custom-breakpoint(895px) {
+    flex-direction: column;
+  }
+}
+
+.content {
+  padding: 24px 24px 36px 24px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.content__header {
+  width: 100%;
+  @include flexCenter(row);
+  margin-bottom: 24px;
+
+  .content__header__title {
+    font-size: 24px;
+  }
+
+  .content__header__result-count {
+    margin-left: 8px;
+  }
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .notice__icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+  }
+
+  .notice__content {
+    padding-top: 1px;
+    font-size: 14px;
+  }
+}
+
+.flight-list {
+  @include flexCenter(column);
+
+  @include tablet-landscape() {
+    width: 100%;
+    flex-direction: row;
+  }
+}
+
+.flight-item {
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 24px;
+
+  @include tablet-landscape() {
+    width: 33.3%;
+    padding: 16px;
+    margin-bottom: 0;
+  }
+
+  @include custom-breakpoint(750px) {
+    width: 50%;
+  }
+
+  @include custom-breakpoint(470px) {
+    width: 100%;
+  }
+}
+
+.flight {
+  @include flexCenter(row);
+  padding: 12px 24px;
+  width: 100%;
+  margin-bottom: 24px;
+  @include boxWithShadow();
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .flight__info-group {
+    h5 {
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+
+  .flight__info-group--row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flight__info-heading {
+    @include headingLabel();
+  }
+
+  .flight__time--next-day::after {
+    content: "+1";
+    position: absolute;
+    font-size: 12px;
+    color: #e74c3c;
+  }
+
+  .flight__arrow-img {
+    margin: 0 12px;
+  }
+
+  .flight__airline-logo {
+    width: 5%;
+    min-height: 62px;
+
+    @include tablet-landscape() {
+      width: 30%;
+      margin-bottom: 24px;
+    }
+  }
+
+  .flight__airline {
+    width: 20%;
+
+    @include tablet-landscape() {
+      width: 70%;
+      margin-bottom: 24px;
+    }
+  }
+
+  .flight__route {
+    width: 15%;
+
+    @include tablet-landscape() {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  }
+
+  .flight__number {
+    width: 10%;
+
+    @include tablet-landscape() {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  }
+
+  .flight__aircraft {
+    width: 20%;
+
+    @include tablet-landscape() {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  }
+
+  .flight__times {
+    width: 20%;
+
+    @include tablet-landscape() {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  }
+
+  .flight__price {
+    width: 10%;
+    padding: 0;
+
+    @include tablet-landscape() {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.form {
+  @include boxWithShadow();
+  .form__heading {
+    font-size: 24px;
+    margin: 24px 0;
+  }
+
+  .form__content {
+    width: 60%;
+    margin: 0 auto;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .input-container {
+    padding: 0;
+  }
+
+  .form__message {
+    margin-bottom: 24px;
+  }
+
+  .form__submit-btn {
+    margin-top: 24px;
+  }
+}
+
+.aircraft-list {
+  @include flexCenter(row);
+
+  .aircraft-list__item {
+    width: 20%;
+    padding: 16px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    @include desktop() {
+      width: 25%;
+    }
+
+    @include tablet-landscape() {
+      width: 33.3%;
+    }
+
+    @include custom-breakpoint(750px) {
+      width: 50%;
+    }
+
+    @include custom-breakpoint(470px) {
+      width: 100%;
+    }
+  }
+
+  .aircraft-list__item:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.aircraft-card {
+  display: flex;
+  flex-direction: column;
+  height: 240px;
+  @include boxWithShadow();
+  overflow: hidden;
+
+  .aircraft-card__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px;
+    flex-grow: 1;
+  }
+
+  .aircraft-card__image {
+    width: 100%;
+    height: 130px;
+  }
+
+  .aircraft-card__model {
+    padding: 12px 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .aircraft-card__info {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 12px;
+
+    .aircraft-card__info-tag {
+      margin: 0 4px;
+      padding: 6px 12px;
+      border: 1px solid $mainColor;
+      border-radius: 5px;
+      color: $mainColor;
+      font-size: 12px;
+    }
+  }
+
+  @include desktop() {
+    height: 250px;
+  }
+
+  @include custom-breakpoint(750px) {
+    height: 280px;
+  }
+
+  @include custom-breakpoint(470px) {
+    height: 320px;
+  }
+
+  @include custom-breakpoint(350px) {
+    height: 270px;
+  }
+}
+
+.pagination {
+  @include flexCenter(row);
+  justify-content: center;
+  margin-top: 36px;
+
+  .pagination_page-indicator {
+    margin: 0 12px;
+  }
+
+  .pagination__btn {
+    height: 16px;
+    width: 16px;
+    padding: 8px;
+    border: 1px solid $mainColor;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #00b8f8;
+      .pagination__image {
+        fill: #fff;
+      }
+    }
+  }
+
+  .pagination__btn--disabled {
+    opacity: 0.5;
+    cursor: auto;
+    &:hover {
+      background-color: transparent;
+      .pagination__image {
+        fill: $mainColor;
+      }
+    }
+  }
+
+  .pagination__image {
+    fill: $mainColor;
+  }
+}
+
+.error {
+  @include boxWithShadow();
+  box-shadow: none;
+  text-align: center;
+  padding: 24px;
+
+  .error__image {
+    width: 50px;
+    height: auto;
+    margin-bottom: 12px;
+  }
+}
+
+.success-message {
+  padding: 24px;
+  text-align: center;
+
+  .success-message__image {
+    width: 40px;
+    height: auto;
+    margin-bottom: 12px;
+  }
+}
+
+.footer {
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 0 -2px 8px 0 rgba(11, 31, 64, 0.07);
+
+  h5 {
+    display: inline-block;
+    padding: 24px 0;
+  }
+
+  a {
+    color: #333;
+    font-weight: 700;
+  }
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__day--selected {
+  background-color: $mainColor;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: $mainColorHover;
+}
+
+.react-datepicker__header {
+  background-color: #fff;
+  border-bottom-color: #eef3f7;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.react-datepicker {
+  @include greyBorder();
+  box-shadow: $boxShadow;
+}
+
+.loader {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  span {
+    display: block;
+  }
+}
+
+// Loading indicator
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 27px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: $mainColor;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 6px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 6px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 26px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 45px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
+}
